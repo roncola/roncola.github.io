@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<title>RRE - WebService</title>
+<meta charset="utf-8" /> 
+
+<xmp theme="cerulean" style="display:none;">
+#Raíces Real Estate - WebService
+
+## Environment
+
+* `node.js` 6.x
+* `iced-coffee-script`, installed as a global package
+* `pm2` 
+* Node plug-ins dev environment (required for node-oracledb)
+	* `build-essential` if running on Debian/Ubuntu
+	* `Xcode command-line tools` if running on macOS
+	* `Visual Studio Community + Windows SDK` if running on Windows
+* `Oracle Instant Client + SDK` installed at `/opt/oracle/instantclient` (required for `node-oracledb`)
+	* [Setup instructions](https://github.com/oracle/node-oracledb/blob/master/INSTALL.md)
+
+## Description
+`rre-webservice` is an express-based wrapper that provides the website/mobile app with JSON data taken from RRE's Oracle database. It also handles basic authentication against 
+a MongoDB table for clients, and provides dynamic content for the website (properties, special offers).
+
+It connects to both databases using SSH tunnels. All settings can be changed on a single `.env` file, please refer to the **Configuration** section.
+
+## Deployment Notes
+All prerequisites listed in **Environment** should be preinstalled before attempting to run the service. During development, `iced` is used to run the iced-coffee-script interpreter directly. However, for performance reasons, in production deployments, one should use `iced -c app.iced` to compile the application to a JavaScript file, which should then be ran using `pm2 start app.js`
+
+## Configuration
+All settings are saved in `.env`
+
+	http_listen_port
+	
+	mdb_tunnel_host
+	mdb_tunnel_port
+	mdb_tunnel_username
+	mdb_tunnel_password
+	mdb_host
+	mdb_port
+	mdb_connection_string
+	
+	odb_tunnel_host
+	odb_tunnel_port
+	odb_tunnel_username
+	odb_tunnel_password
+	odb_host
+	odb_port
+	odb_username
+	odb_password
+	odb_connection_string
+	
+## Exposed endpoints
+### _GET_ /
+Returns the current server time and health status.
+
+### _GET_ /ofertas
+Returns an array of all `propiedad`es marked as `destacado`.
+
+	[
+		{
+			"nombre": "La Estación",
+			"ubicacion": "-25.481794, -57.227102",
+			"precio": "Cuotas desde 350.000",
+			"descripcion": "Ubicado en ...",
+			"keywords": "Pirayu,Paraguari,Caacupe,Yaguaron,Ypacarai",
+			"destacado": true,
+			"resaltado1": "En Pirayú",
+			"resaltado2": "Lotes para vivir o invertir",
+			"resaltado3": "Luz, Agua, sobre Ruta Asfaltada, a orillas del arroyo Pirayu",
+			"foto1": {
+				"name": "433069ae-d2f0-4157-9a33-503265832206.jpg",
+				"fileId": "586febec507b48eb5c32d55c"
+			},
+			"foto2": {
+				"name": "5c0971df-b328-40f0-aeba-ab7c3ed19368.jpg",
+				"fileId": "586febf4507b48eb5c32d55f"
+			},
+			"_id": "586fec0e507b48eb5c32d562",
+			"createTime": "2017-01-06T19:12:14.616Z",
+			"modifyTime": "2017-01-06T19:12:14.617Z",
+			"__textIndex": ["la", "estación", "lotes", "cuotas" ... ]
+			"moneda": {
+				"id": "586fb868507b48eb5c32d557",
+				"name": "PYG"
+			},
+			"producto": {
+				"id": "586fc410507b48eb5c32d55b",
+				"name": "Lotes"
+			},
+			"categoria": {
+				"id": "586fb823507b48eb5c32d556",
+				"name": "Lotes"
+			},
+			"__v": 0
+		},...
+
+### _GET_ /propiedades/:categoria
+Returns an array of all `propiedad`es belonging to a `categoria`.
+
+### _GET_ /propiedades/:categoria
+Returns an array of all `propiedad`es belonging to a `categoria`.
+
+### _GET_ /getfile/:fileID
+Returns a file from `gfs` based on `fileID`.
+
+
+### _GET_ /getimage/:fileID
+Returns an image from `gfs` based on `fileID`.
+
+_Notes:_ Resizes to 800x600, tries to be smart about which parts to crop. This operation is CPU-expensive and result should be cached by the caller. This is currently not rate-limited.
+
+
+### _POST_ /login
+Request body (`application/json`)
+
+	cedula: string
+	password: string
+
+Returns all information about a `cliente` as JSON object or an empty array if login failed.
+
+	resp.cliente = result from VW_CLIENTES
+	resp.productos = result from VW_PRODUCTOS
+	resp.pagos = result from VW_PAGOS
+	resp.cuotas = result from VW_CUOTAS
+	resp.prosperarpagos = result from VW_PROSPERAR_PAGOS
+	resp.prosperarcuotas = result from VW_PROSPERAR_CUOTAS
+	resp.comprobantes = result from VW_COMPROBANTES
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
