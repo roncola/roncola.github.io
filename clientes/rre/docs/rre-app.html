@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<title>RRE - Mobile App</title>
+<meta charset="utf-8" /> 
+
+<xmp theme="cerulean" style="display:none;">
+#Raíces Real Estate - Mobile App
+
+## Dev Environment
+
+* [Cordova 6](https://cordova.apache.org)
+	* [cordova-splash](https://github.com/AlexDisler/cordova-splash)
+	* [cordova-icon](https://github.com/AlexDisler/cordova-icon)
+* [Android Studio](https://developer.android.com/studio/index.html?hl=es-419)
+* Xcode 8.2.1+
+* [Prepros 6](https://prepros.io/)
+* [Bower](https://bower.io/)
+
+## FS Layout
+
+	/hooks - native code hooks
+	/plugins - cordova plugins
+	/res - (currently unused) icons
+	/www - main UI, follows the website's directory structure
+	 
+## Description
+`rre-website` is a hybrid app, currently building for Android 4+ and iOS9+ platforms.
+
+## Development Notes
+Pug/CoffeeScript/SASS compiling is handled by Prepros.
+Dependencies are handled by Bower. It's very important to note that if a dependency is not handled by Bower, its public GitHub/BitBucket repo should be used instead.
+
+**DO NOT** stick dependencies under `/css` and `/js`
+
+`cordova-plugin-browsersync` is your friend.
+
+Please run PREP_DEVENV.sh after cloning the repo, to properly install all dependencies and plugins.
+
+## Deployment Notes
+
+Latest version of Android Studio doesn't include tools required by Cordova, so manually copy over tools_r25.2.3-*platform*.zip to your Android SDK platform tools.
+
+Make sure you open the generated Xcode project at least once, assign the proper development team and fix the signing permissions. Cordova is dumb, xcodebuild is dumber. You only have to do this once, if you do not delete the generated /platforms/ios directory.
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
