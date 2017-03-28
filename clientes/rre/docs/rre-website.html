@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<title>RRE - Website</title>
+<meta charset="utf-8" /> 
+
+<xmp theme="cerulean" style="display:none;">
+#Raíces Real Estate - Website
+
+## Dev Environment
+
+* [Prepros 6](https://prepros.io/)
+* [Bower](https://bower.io/)
+
+
+## Production Environment
+
+* Any static HTTPS server
+* PHP5 (for mail())
+
+## FS Layout
+
+	/*.pug - Main site code
+	/_templates/*.pug - Templates used by the above
+	/css/*.sass - Stylesheet
+	/downloads/* - Statics
+	/img/* - Image files used by the static pages
+	/js/clientes.coffee - Code for the client area
+	/js/main.coffee - Helper functions for all pages
+	/js/wsquery.coffee - Displays data retrieved from the webservice
+	/mail.php - Simple mailer with reCaptcha Auth (PHP5+)
+	 
+## Description
+`rre-website` is an mostly static website that displays data retrieved from a webservice.
+
+
+## Development Notes
+Pug/CoffeeScript/SASS compiling is handled by Prepros.
+Dependencies are handled by Bower. It's very important to note that if a dependency is not handled by Bower, its public GitHub/BitBucket repo should be used instead.
+
+**DO NOT** stick dependencies under `/css` and `/js`
+
+## Deployment Notes
+Prepros takes care of deployment, as long as `bower install` has been run at least once on the project folder.
+
+Once you're confident with your 'Live Preview', simply use Prepros' built-in FTP/SFTP upload to update the live site.
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
